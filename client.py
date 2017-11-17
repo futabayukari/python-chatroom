@@ -22,7 +22,7 @@ def Register(client):
 	message = "Register:"+ids+","+pw
 	client.send(message)
 	response = client.recv(4096)
-	print "end Register"
+	print response
 	return False
 
 def login(client):
@@ -38,7 +38,6 @@ def login(client):
 		status = 1
 		print "login succeed client"
 		userID = ids
-		print status
 		return True
 	else:
 		print "login failed client"
@@ -74,7 +73,6 @@ def chat_Room(client):
 				client.send(command)
 				chat_status = False
 				break
-			print "command end"
 		except:
 			client.send("Disconnect!!;"+userID)
 			print "chat end"
@@ -88,7 +86,6 @@ def handle_client(client_socket):
 		while chat_status:
 			try:
 				request = client_socket.recv(1024)
-				print len(request)
 				if request != "Disconnect!!" and len(request) > 0:
 					print request
 				elif request == "Disconnect!!":
@@ -102,13 +99,11 @@ def handle_client(client_socket):
 		client_socket.close()
 		print "end"
 def show_all_user(client):
-	print "show all user"
 	client.send("online")
 	response = client.recv(4096)
 	userList = response.split(";")
 	for user in userList:
 		print user
-	print response
 	
 def status_true(client, command):
 	if "chat" in command:
@@ -133,7 +128,6 @@ print "chat port:"
 chat_port = raw_input()
 try:
 	while	True:
-		print status
 		if(status == False):
 			print "[*]Login/Register:"
 		else:
@@ -145,7 +139,6 @@ try:
 			else:
 				status = status_true(client, command)
 			
-			print "command end"
 		except:
 			client.send("Disconnect!!;"+userID)
 			print "end00"
